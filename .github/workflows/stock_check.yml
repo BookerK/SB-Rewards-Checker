@@ -1,0 +1,30 @@
+name: Starbucks Stock Check
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"   # 15分おき（最初はこれくらいが無難）
+  workflow_dispatch:        # 手動実行もできる
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          pip install playwright
+          playwright install chromium
+
+      - name: Run stock checker
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: |
+          python check_stock.py
