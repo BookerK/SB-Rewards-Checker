@@ -58,7 +58,6 @@ with sync_playwright() as p:
 
     browser.close()
 
-send_discord("🧪 GitHub Actions 動作確認テスト")
 
 # Discordに送信
 lines = []
